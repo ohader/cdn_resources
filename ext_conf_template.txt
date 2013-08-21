@@ -1,0 +1,5 @@
+# cat=general; type=string; label=Prepend static URL: Static URL to prepend for resources
+prependStaticUrl =
+
+# cat=general; type=string; label=Origin URL: Origin URL of CDN used to fetch data
+originUrl =
