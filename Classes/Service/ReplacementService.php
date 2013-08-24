@@ -68,7 +68,7 @@ class Tx_CdnResources_Service_ReplacementService {
 
 	protected function collectImages() {
 		foreach ($this->getExtractionService()->findImages($this->content) as $image) {
-			$this->prependStaticUrl($image, 'src');
+			$this->prependStaticUrls($image, array('src', 'data-src'));
 		}
 	}
 
@@ -107,6 +107,45 @@ class Tx_CdnResources_Service_ReplacementService {
 
 		$this->search[] = $element['tag'];
 		$this->replace[] = str_replace($attributeValue, $modifiedAttributeValue, $element['tag']);
+
+		return TRUE;
+	}
+
+	/**
+	 * @param array $element
+	 * @param array $names
+	 * @return boolean
+	 */
+	protected function prependStaticUrls(array $element, array $names) {
+		$search = array();
+		$replace = array();
+
+		foreach ($names as $name) {
+			if (empty($element['attributes'][$name])) {
+				continue;
+			}
+
+			$attributeValue = $element['attributes'][$name];
+			$modifiedAttributeValue = $this->getUrlService()->prependStaticUrl($attributeValue);
+
+			if ($attributeValue === $modifiedAttributeValue) {
+				continue;
+			}
+
+			$search[] = $attributeValue;
+			$replace[] = $modifiedAttributeValue;
+		}
+
+		if (empty($search) || empty($replace)) {
+			return FALSE;
+		}
+
+		if (in_array($element['tag'], $this->search)) {
+			return FALSE;
+		}
+
+		$this->search[] = $element['tag'];
+		$this->replace[] = str_replace($search, $replace, $element['tag']);
 
 		return TRUE;
 	}
