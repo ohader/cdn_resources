@@ -3,3 +3,10 @@ prependStaticUrl =
 
 # cat=general; type=string; label=Origin URL: Origin URL of CDN used to fetch data
 originUrl =
+
+# cat=general; type=boolean; label=Adaptive Images: Whether to enable URL rewriting for adaptive-images
+enableAdaptiveImages = 0
+
+# cat=general; type=string; label=jQuery trigger: Basic jQuery component, used to extend with adaptive-image replacement
+jQueryTrigger = /jquery.min.js
+

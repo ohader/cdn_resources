@@ -29,9 +29,12 @@
  * @package cdn_resource
  */
 class Tx_CdnResources_Service_ConfigurationService implements t3lib_Singleton {
+
 	const EXTENSION_Key = 'cdn_resources';
 	const NAME_PrependStaticUrl = 'prependStaticUrl';
 	const NAME_OriginUrl = 'originUrl';
+	const NAME_EnableAdaptiveImages = 'enableAdaptiveImages';
+	const NAME_JQueryTrigger = 'jQueryTrigger';
 
 	/**
 	 * @var array
@@ -85,5 +88,20 @@ class Tx_CdnResources_Service_ConfigurationService implements t3lib_Singleton {
 	public function getOriginUrl() {
 		return $this->get(self::NAME_OriginUrl);
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getEnableAdaptiveImages() {
+		return (bool) $this->get(self::NAME_EnableAdaptiveImages);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getJQueryTrigger() {
+		return $this->get(self::NAME_JQueryTrigger);
+	}
+
 }
 ?>
