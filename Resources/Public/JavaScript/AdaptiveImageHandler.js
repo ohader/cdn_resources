@@ -7,6 +7,7 @@
  */
 
 jQuery(document).ready(function($) {
+	var dynamicPath = 'ai-dynamic';
 	var attributeNames = $(['src', 'data-src']);
 	var resolutionSteps = [1382, 992, 768, 480];
 	var resolutionCurrent = Math.max(screen.width, screen.height);
@@ -31,7 +32,7 @@ jQuery(document).ready(function($) {
 			var attributeValue = $element.attr(attributeName);
 
 			if (attributeValue && attributeValue.indexOf(prependStaticUrl) === 0) {
-				attributeValue = prependStaticUrl + 'ai/' + resolution + '/' + attributeValue.substr(prependStaticUrl.length);
+				attributeValue = prependStaticUrl + dynamicPath + '/' + resolution + '/' + attributeValue.substr(prependStaticUrl.length);
 				$element.attr(attributeName, attributeValue);
 			}
 		});
