@@ -44,11 +44,11 @@ class Tx_CdnResources_Service_ExtractionService implements t3lib_Singleton {
 		$images = array();
 		$matches = array();
 
-		if (preg_match_all('#<img([^>]+src="[^"]+"[^>]*?)/?\s*>#', $content, $matches)) {
+		if (preg_match_all('#<img([^>]+)/?\s*>#', $content, $matches)) {
 			foreach ($matches[0] as $index => $tag) {
 				$attributes = $this->parseAttributes($matches[1][$index]);
 
-				if (empty($attributes['src'])) {
+				if (empty($attributes['src']) && empty($attributes['data-src'])) {
 					continue;
 				}
 
