@@ -1,14 +1,14 @@
-= CDN Resources
+# CDN Resources
 
 This extension provides a way to rewrite resource URIs in HTML to point to
 a particular hostname - e.g. a static CDN resource. Stylesheets, JavaScript
 files and images are considered as resources in that regard.
 
-== Requirements
+## Requirements
 
 + TYPO3 CMS 6.2 or any later version
 
-== Concept
+## Concept
 
 Imagine your website is running on the URL http://www.domain.com/ and is used
 to server dynamic contents as well as static resources. The lower the stress
@@ -29,7 +29,7 @@ as plain edge cache in this scenario.
     to retrieve the accordant data
 + user does not realize which server was used under the hood
 
-== Configuration
+## Configuration
 
 This extension has some configuration properties that can be modified by
 using the TYPO3 CMS Extension Manager.
