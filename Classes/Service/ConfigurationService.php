@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,10 +27,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * @package cdn_resource
+ * @package OliverHader\CdnResources\Service
  */
-class Tx_CdnResources_Service_ConfigurationService implements t3lib_Singleton {
+class ConfigurationService implements SingletonInterface {
 
 	const EXTENSION_Key = 'cdn_resources';
 	const NAME_PrependStaticUrl = 'prependStaticUrl';
@@ -42,10 +47,10 @@ class Tx_CdnResources_Service_ConfigurationService implements t3lib_Singleton {
 	protected $configuration;
 
 	/**
-	 * @return Tx_CdnResources_Service_ConfigurationService
+	 * @return ConfigurationService
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_ConfigurationService');
+		return GeneralUtility::makeInstance('OliverHader\\CdnResources\\Service\\ConfigurationService');
 	}
 
 	/**
@@ -104,4 +109,3 @@ class Tx_CdnResources_Service_ConfigurationService implements t3lib_Singleton {
 	}
 
 }
-?>

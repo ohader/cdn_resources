@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,10 +27,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * @package cdn_resource
+ * @package OliverHader\CdnResources\Service
  */
-class Tx_CdnResources_Service_HttpHeaderService implements t3lib_Singleton {
+class HttpHeaderService implements SingletonInterface {
+
 	const NAME_Type = 'X-CdnResource-Type';
 	const VALUE_Type_Resources = 'resources';
 	const VALUE_Type_Static = 'static';
@@ -40,10 +46,10 @@ class Tx_CdnResources_Service_HttpHeaderService implements t3lib_Singleton {
 	protected $headers = array();
 
 	/**
-	 * @return Tx_CdnResources_Service_HttpHeaderService
+	 * @return HttpHeaderService
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_HttpHeaderService');
+		return GeneralUtility::makeInstance('OliverHader\\CdnResources\\Service\\HttpHeaderService');
 	}
 
 	/**
@@ -77,5 +83,5 @@ class Tx_CdnResources_Service_HttpHeaderService implements t3lib_Singleton {
 			header($name . ': ' . $value);
 		}
 	}
+
 }
-?>

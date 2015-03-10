@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,16 +27,21 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use OliverHader\CdnResources\Service\ConfigurationService;
+
 /**
- * @package cdn_resources
+ * @package OliverHader\CdnResources\Hook
  */
-class Tx_CdnResources_Hook_PreProcessHook implements t3lib_Singleton {
+class PreProcessHook implements SingletonInterface {
 
 	/**
 	 * @param array $parameters
-	 * @param t3lib_PageRenderer $pageRenderer
+	 * @param PageRenderer $pageRenderer
 	 */
-	public function renderPreProcess(array $parameters, t3lib_PageRenderer $pageRenderer) {
+	public function renderPreProcess(array $parameters, PageRenderer $pageRenderer) {
 		$trigger = $this->getConfigurationService()->getJQueryTrigger();
 
 		if (empty($trigger) || !$this->getConfigurationService()->getEnableAdaptiveImages()) {
@@ -88,18 +95,17 @@ class Tx_CdnResources_Hook_PreProcessHook implements t3lib_Singleton {
 	}
 
 	/**
-	 * @return tslib_fe
+	 * @return TypoScriptFrontendController
 	 */
 	protected function getFrontend() {
 		return $GLOBALS['TSFE'];
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_ConfigurationService
+	 * @return ConfigurationService
 	 */
 	protected function getConfigurationService() {
-		return Tx_CdnResources_Service_ConfigurationService::getInstance();
+		return ConfigurationService::getInstance();
 	}
 
 }
-?>

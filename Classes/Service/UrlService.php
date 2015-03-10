@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,15 +27,19 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * @package cdn_resources
+ * @package OliverHader\CdnResources\Service
  */
-class Tx_CdnResources_Service_UrlService implements t3lib_Singleton {
+class UrlService implements SingletonInterface {
+
 	/**
-	 * @return Tx_CdnResources_Service_UrlService
+	 * @return UrlService
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_UrlService');
+		return GeneralUtility::makeInstance('OliverHader\\CdnResources\\Service\\UrlService');
 	}
 
 	/**
@@ -82,7 +88,7 @@ class Tx_CdnResources_Service_UrlService implements t3lib_Singleton {
 		$result = FALSE;
 
 		$urlParts = parse_url($url);
-		$currentParts = parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'));
+		$currentParts = parse_url(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
 		if (empty($urlParts['host']) && empty($urlParts['scheme']) && !empty($urlParts['path'])) {
 			$urlParts['host'] = $urlParts['path'];
@@ -100,8 +106,12 @@ class Tx_CdnResources_Service_UrlService implements t3lib_Singleton {
 	 * @param string $url
 	 * @return string
 	 */
-	public function get($url) {
-		$prependParts = parse_url($this->getConfigurationService()->getPrependStaticUrl());
+	public function get($url = NULL) {
+		if ($url === NULL) {
+			$url = $this->getConfigurationService()->getPrependStaticUrl();
+		}
+
+		$prependParts = parse_url($url);
 
 		if (empty($prependParts['host']) && empty($prependParts['scheme']) && !empty($prependParts['path'])) {
 			$prependParts['host'] = $prependParts['path'];
@@ -133,14 +143,14 @@ class Tx_CdnResources_Service_UrlService implements t3lib_Singleton {
 	 * @return boolean
 	 */
 	public function isSecure() {
-		return t3lib_div::getIndpEnv('TYPO3_SSL');
+		return GeneralUtility::getIndpEnv('TYPO3_SSL');
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_ConfigurationService
+	 * @return ConfigurationService
 	 */
 	protected function getConfigurationService() {
-		return Tx_CdnResources_Service_ConfigurationService::getInstance();
+		return ConfigurationService::getInstance();
 	}
+
 }
-?>

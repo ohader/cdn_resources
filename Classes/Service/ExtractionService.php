@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,15 +27,19 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
- * @package cdn_resources
+ * @package OliverHader\CdnResources\Service
  */
-class Tx_CdnResources_Service_ExtractionService implements t3lib_Singleton {
+class ExtractionService implements SingletonInterface {
+
 	/**
-	 * @return Tx_CdnResources_Service_ExtractionService
+	 * @return ExtractionService
 	 */
 	public static function getInstance() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_ExtractionService');
+		return GeneralUtility::makeInstance('OliverHader\\CdnResources\\Service\\ExtractionService');
 	}
 
 	/**
@@ -125,5 +131,5 @@ class Tx_CdnResources_Service_ExtractionService implements t3lib_Singleton {
 
 		return $attributes;
 	}
+
 }
-?>

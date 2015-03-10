@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Hook;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,15 +27,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use OliverHader\CdnResources\Service\ConfigurationService;
+use OliverHader\CdnResources\Service\HttpHeaderService;
+use OliverHader\CdnResources\Service\ReplacementService;
+use OliverHader\CdnResources\Service\UrlService;
+
 /**
- * @package cdn_resources
+ * @package OliverHader\CdnResources\Hook
  */
-class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
+class PostProcessHook implements SingletonInterface {
+
 	/**
 	 * @param array $parameters
-	 * @param tslib_fe $frontend
+	 * @param TypoScriptFrontendController $frontend
 	 */
-	public function output(array $parameters, tslib_fe $frontend) {
+	public function output(array $parameters, TypoScriptFrontendController $frontend) {
 		if (!$this->getConfigurationService()->getPrependStaticUrl()) {
 			return;
 		}
@@ -46,9 +58,9 @@ class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
 
 	/**
 	 * @param array $parameters
-	 * @param t3lib_PageRenderer $pageRenderer
+	 * @param PageRenderer $pageRenderer
 	 */
-	public function renderPostProcess(array $parameters, t3lib_PageRenderer $pageRenderer) {
+	public function renderPostProcess(array $parameters, PageRenderer $pageRenderer) {
 		if (!$this->getConfigurationService()->getPrependStaticUrl()) {
 			return;
 		}
@@ -59,7 +71,7 @@ class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
 
 		array_unshift(
 			$parameters['headerData'],
-			t3lib_div::wrapJS('var prependStaticUrl = "' . htmlspecialchars($prependStaticUrl) . '";')
+			GeneralUtility::wrapJS('var prependStaticUrl = "' . htmlspecialchars($prependStaticUrl) . '";')
 		);
 	}
 
@@ -67,14 +79,14 @@ class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function outputHeaders() {
-		$httpHeaderService = Tx_CdnResources_Service_HttpHeaderService::getInstance();
+		$httpHeaderService = HttpHeaderService::getInstance();
 
 		if ($this->getFrontend()->isStaticCacheble()) {
-			$httpHeaderService->setType(Tx_CdnResources_Service_HttpHeaderService::VALUE_Type_Static);
+			$httpHeaderService->setType(HttpHeaderService::VALUE_Type_Static);
 		} elseif ($this->getFrontend()->isClientCachable) {
-			$httpHeaderService->setType(Tx_CdnResources_Service_HttpHeaderService::VALUE_Type_Resources);
+			$httpHeaderService->setType(HttpHeaderService::VALUE_Type_Resources);
 		} else {
-			$httpHeaderService->setType(Tx_CdnResources_Service_HttpHeaderService::VALUE_Type_None);
+			$httpHeaderService->setType(HttpHeaderService::VALUE_Type_None);
 		}
 
 		$httpHeaderService->output();
@@ -89,7 +101,7 @@ class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
 	}
 
 	/**
-	 * @return tslib_fe
+	 * @return TypoScriptFrontendController
 	 */
 	protected function getFrontend() {
 		return $GLOBALS['TSFE'];
@@ -97,27 +109,27 @@ class Tx_CdnResources_Hook_PostProcessHook implements t3lib_Singleton {
 
 	/**
 	 * @param string $content
-	 * @return Tx_CdnResources_Service_ReplacementService
+	 * @return ReplacementService
 	 */
 	protected function createReplacementService($content) {
-		return t3lib_div::makeInstance(
-			'Tx_CdnResources_Service_ReplacementService',
+		return GeneralUtility::makeInstance(
+			'OliverHader\\CdnResources\\Service\\ReplacementService',
 			$content
 		);
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_UrlService
+	 * @return UrlService
 	 */
 	protected function getUrlService() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_UrlService');
+		return UrlService::getInstance();
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_ConfigurationService
+	 * @return ConfigurationService
 	 */
 	protected function getConfigurationService() {
-		return Tx_CdnResources_Service_ConfigurationService::getInstance();
+		return ConfigurationService::getInstance();
 	}
+
 }
-?>

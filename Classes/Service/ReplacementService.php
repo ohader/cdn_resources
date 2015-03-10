@@ -1,4 +1,6 @@
 <?php
+namespace OliverHader\CdnResources\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,9 +28,10 @@
  ***************************************************************/
 
 /**
- * @package cdn_resources
+ * @package OliverHader\CdnResources\Service
  */
-class Tx_CdnResources_Service_ReplacementService {
+class ReplacementService {
+
 	/**
 	 * @var string
 	 */
@@ -151,17 +154,17 @@ class Tx_CdnResources_Service_ReplacementService {
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_UrlService
+	 * @return UrlService
 	 */
 	protected function getUrlService() {
-		return t3lib_div::makeInstance('Tx_CdnResources_Service_UrlService');
+		return UrlService::getInstance();
 	}
 
 	/**
-	 * @return Tx_CdnResources_Service_ExtractionService
+	 * @return ExtractionService
 	 */
 	protected function getExtractionService() {
-		return Tx_CdnResources_Service_ExtractionService::getInstance();
+		return ExtractionService::getInstance();
 	}
+
 }
-?>
