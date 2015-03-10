@@ -28,6 +28,7 @@ namespace OliverHader\CdnResources\Hook;
  ***************************************************************/
 
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use OliverHader\CdnResources\Service\ConfigurationService;
@@ -77,8 +78,9 @@ class PreProcessHook implements SingletonInterface {
 			if (strpos($fileDefinition['file'], $trigger) > 0) {
 				$inserted = TRUE;
 
+				$prefix = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 				// @todo Resolve hard-coded URI
-				$file = '/typo3conf/ext/cdn_resources/Resources/Public/JavaScript/AdaptiveImageHandler.js';
+				$file = $prefix . 'typo3conf/ext/cdn_resources/Resources/Public/JavaScript/AdaptiveImageHandler.js';
 				$temporaryDefinitions[$file] = array(
 					'file' => $file,
 					'type' => $fileDefinition['type'],
